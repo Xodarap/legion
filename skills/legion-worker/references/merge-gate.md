@@ -41,11 +41,49 @@ other change to the head voids it.
   The head's check-runs
   (`gh api repos/<o>/<r>/commits/<headRefOid>/check-runs --paginate --jq '.check_runs[] | [.name, .status, .conclusion] | @tsv'`):
   every required name present, `completed` and `success` (GitHub counts `neutral` and `skipped`
-  as passing for a required check). A required check
-  `queued` or `in_progress`: wait. One `completed` as
-  `cancelled`, or absent: `gh run rerun <run-id>` once, then wait; when nothing will run it (a
-  check only a commit status reports, a workflow another repository defines), tell the architect
-  and do not approve.
+<<<<<<< conflict 1 of 1
+%%%%%%% diff from: rpurmkqy bb9fe49c "perf(dispatch): settlement lists a document's marks without computing positions (#2467)"
+\\\\\\\        to: qquuttkl 85e78bb5 "retro: remove .legion/INFRA-177/ before READY"
+-  as passing for a required check). And the compare proving only `.legion/<issue>/` changed since,
+-  `<issue>` being your `LEGION_ISSUE` (another issue's `.legion/` is code to the daemon and READY)
+-  (`gh api repos/<o>/<r>/compare/<ci head>...<headRefOid> --jq '{handoffsOnly: ([.files[] | .filename, (.previous_filename // empty)] | all(startswith(".legion/<issue>/"))), files: (.files | length)}'`
+-  prints `handoffsOnly` `true`; `false` means code was pushed since CI ran, so wait for the new
+-  push's runs and read the CI head again). GitHub's compare lists at most 300 files for the whole
+-  comparison, so `files` at 300 is a comparison GitHub cut at its cap and `handoffsOnly` decides
+-  nothing: tell the architect and do not approve. A required check
++  as passing for a required check). A required check
+   `queued` or `in_progress`: wait. One `completed` as
+   `cancelled`, or absent: `gh run rerun <run-id>` once, then wait; when nothing will run it (a
+   check only a commit status reports, a workflow another repository defines), tell the architect
+-  and do not approve. `gh pr checks <n>` is not the read: it reads only the current head, which
+-  at a handoff head shows only the `pr-title` runs the review events start (measured on
+-  sjawhar/legion#1944 at 0220b94fc2 on 2026-10-14).
++  and do not approve.
++++++++ mmlowqmk d4cbcfe6 "fix: tests that fail and pass on a re-run are fixed at their cause, with the product races behind them (#2396)"
+  as passing for a required check). And the compare proving only `.legion/<issue>/` changed since,
+  `<issue>` being your `LEGION_ISSUE` (another issue's `.legion/` is code to the daemon and READY)
+  (`gh api repos/<o>/<r>/compare/<ci head>...<headRefOid> --jq '{handoffsOnly: ([.files[] | .filename, (.previous_filename // empty)] | all(startswith(".legion/<issue>/"))), files: (.files | length)}'`
+  prints `handoffsOnly` `true`; `false` means code was pushed since CI ran, so wait for the new
+  push's runs and read the CI head again). GitHub's compare lists at most 300 files for the whole
+  comparison, so `files` at 300 is a comparison GitHub cut at its cap and `handoffsOnly` decides
+  nothing: tell the architect and do not approve. A required check
+  `queued` or `in_progress`: wait. One `completed` as `cancelled`, or absent: re-run that run's
+  failed and cancelled jobs, once, then wait — never the whole run, which runs again every job that
+  succeeded too. Find the run and job at the CI head: the head's runs
+  (`gh api 'repos/<o>/<r>/actions/runs?head_sha=<ci head>&per_page=100' --jq '.workflow_runs[] | [.id, .name, .event, .status, .conclusion] | @tsv'`),
+  then each candidate run's jobs
+  (`gh api repos/<o>/<r>/actions/runs/<run-id>/jobs --jq '.jobs[] | [.id, .name, .status, .conclusion] | @tsv'`).
+  A cancelled job: `gh run rerun <run-id> --failed`, which GitHub applies to the run's failed and
+  cancelled jobs and the jobs that depend on them, and to nothing that succeeded. Never
+  `--job <job-id>` alone: under a routing workflow, re-running only the final job reads the
+  cancelled results again and stays red. GitHub refuses a re-run while an attempt of that run is
+  still in progress: wait for it. When no
+  run at the CI head holds the job, or nothing will run it (a check only a commit status reports, a
+  workflow another repository defines), tell the architect and do not approve. `gh pr checks <n>`
+  is not the read: it reads only the current head, which
+  at a handoff head shows only the `pr-title` runs the review events start (measured on
+  sjawhar/legion#1944 at 0220b94fc2 on 2026-10-14).
+>>>>>>> conflict 1 of 1 ends
   Approval is refused while either `E2E (implementer)` or `E2E (tester)` is missing: `REQUEST_CHANGES` naming the missing line.
   Skip the `Thermo` line entirely on a docs-only PR. Submit **one review per round** —
   `REQUEST_CHANGES` when any correctness finding stands, otherwise `APPROVE` of the head you
