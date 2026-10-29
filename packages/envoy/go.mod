@@ -133,10 +133,12 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800 // indirect
 )
 
-// The sjawhar/ygo fork is upstream ygo v1.51.2 plus fixes Dispatch depends on while each waits in
-// an upstream pull request (reearth/ygo #258, #260, #263, #266, #268, #269, #291, #331, #332; the fork
-// carries #258's fix as its own closed duplicate, #262): an iterative delete cascade and nested
-// reads, so the stack a delete or read needs does not grow with a tree a peer nested; the
+// The sjawhar/ygo fork is upstream ygo v1.51.2 plus fixes and capabilities, each carried until
+// upstream ships it. The fork's RELEASE_NOTES.md lists every member with its upstream pull request:
+// most wait in one (reearth/ygo #258, #260, #263, #266, #268, #269, #291, #331, #332, #333, #334,
+// #335, #338; the fork carries #258's fix as its own closed duplicate, #262), #304 merged upstream
+// in 1.54.0, and four have none opened yet. Dispatch depends on: an iterative delete cascade and
+// nested reads, so the stack a delete or read needs does not grow with a tree a peer nested; the
 // transactional GC range search; a whole document state resolves its own dependencies before the
 // pending cap, through a dependency worklist rather than a re-scan per step; items merge only when
 // their right origins match, so a re-encoded document keeps its text order; the bundled stores keep
@@ -144,9 +146,13 @@ require (
 // check rather than refusing it past a pending cap; Apply stamps a room with no peer idle when it
 // returns, so the idle sweep evicts a room only the API touched; a Hocuspocus-framed connection is
 // answered one SyncStatus for each SyncStep2 or Update it sends, so the browser's provider learns
-// which of its edits the room took; CloseRoom closes a browser that connects while it runs,
-// which it used to leave on the room it removed, where no later edit reached it; and a document
-// logs each committed transaction's update in commit order under its own lock (UpdateLog), so the
-// room's update observer measures each update against the room the commit before it left. A merged
-// update's skip parking the items after it (reearth/ygo#257) is upstream since v1.51.0.
-replace github.com/reearth/ygo => github.com/sjawhar/ygo v1.51.3-sami.4
+// which of its edits the room took; valid awareness reaches its sending peer, and a read-only peer
+// receives a bounded empty awareness response, so an idle provider stays connected; CloseRoom
+// closes a browser that connects while it runs, which it used to leave on the room it removed,
+// where no later edit reached it; a document logs each committed transaction's update in commit
+// order under its own lock (UpdateLog), so the room's update observer measures each update against
+// the room the commit before it left; parked delete ranges are capped as parked items are, and a
+// room loads its stored state with that cap lifted; and an observed text with a map-valued format
+// no longer panics with the document's lock held. A merged update's skip parking the items after it
+// (reearth/ygo#257) is upstream since v1.51.0.
+replace github.com/reearth/ygo => github.com/sjawhar/ygo v1.51.3-sami.9

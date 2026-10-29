@@ -19,8 +19,8 @@ you go.
 
 A dot at the end of the tab row shows the document's connection: connecting, connected, offline,
 or failed. Point at it to read which. A document left open stays connected while nobody types in
-it: Dispatch sends the page a small message at least every 15 seconds, so neither the page nor a
-proxy in front of Dispatch takes the quiet connection for a dead one.
+it: the page renews its presence every 15 to 18 seconds and Dispatch sends that renewal back, so
+neither the page nor a proxy in front of Dispatch takes the quiet connection for a dead one.
 
 ## Versions
 

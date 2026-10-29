@@ -1,0 +1,6 @@
+kind: Changed
+body: |-
+    Document sockets now rely on ygo's Hocuspocus-compatible awareness echo instead of a Dispatch frame-watching keep-alive wrapper. A read-write peer receives its own awareness renewal; a read-only peer receives a bounded empty awareness response.
+time: 2026-10-29T21:50:00Z
+custom:
+    Issue: INFRA-767
