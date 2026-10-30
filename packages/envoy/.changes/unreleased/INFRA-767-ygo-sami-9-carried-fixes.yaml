@@ -1,6 +1,6 @@
 kind: Fixed
 body: |-
-    The ygo pin moves from v1.51.3-sami.4 to v1.51.3-sami.9, which also carries the fork's sami.5 to sami.8 cuts. A peer update that would grow the delete ranges parked for missing structs past 100,000 is now refused, a room whose stored state holds more parked entries than that cap still loads, and an observed text with a map-valued format (a link mark) no longer panics and holds its document's lock on the next edit.
+    The ygo pin moves from v1.51.3-sami.4 to v1.51.3-sami.9, which also carries the fork's sami.5 to sami.8 cuts. A peer update that would grow the delete ranges parked for missing structs past Dispatch's parked-item cap of 1,048,576 (Dispatch sets ygo's `MaxPendingItems` to `1 << 20`; ygo's own default is 100,000) is now refused, a room whose stored state holds more parked entries than that cap still loads, and an observed text with a map-valued format (a link mark) no longer panics and holds its document's lock on the next edit.
 time: 2026-10-29T22:20:00Z
 custom:
     Issue: INFRA-767

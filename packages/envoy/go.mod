@@ -135,9 +135,10 @@ require (
 
 // The sjawhar/ygo fork is upstream ygo v1.51.2 plus fixes and capabilities, each carried until
 // upstream ships it. The fork's RELEASE_NOTES.md lists every member with its upstream pull request:
-// most wait in one (reearth/ygo #258, #260, #263, #266, #268, #269, #291, #331, #332, #333, #334,
-// #335, #338; the fork carries #258's fix as its own closed duplicate, #262), #304 merged upstream
-// in 1.54.0, and four have none opened yet. Dispatch depends on: an iterative delete cascade and
+// eight merged upstream after v1.51.2 and are carried until the fork moves past it (reearth/ygo
+// #258, #260, #263, #266, #268, #269, #291, #304; the fork carries #258's fix as its own closed
+// duplicate, #262), seven wait in one (#331, #332, #333, #334, #335, #336, #338), and three have
+// none opened yet. Dispatch depends on: an iterative delete cascade and
 // nested reads, so the stack a delete or read needs does not grow with a tree a peer nested; the
 // transactional GC range search; a whole document state resolves its own dependencies before the
 // pending cap, through a dependency worklist rather than a re-scan per step; items merge only when
